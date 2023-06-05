@@ -41,6 +41,15 @@ pub(crate) async fn get(req: Request<State>) -> tide::Result {
     let state = req.state().clone();
     let db = &state.db;
 
+    let headers = req
+        .header(utils::auth::AUTHORIZATION_HEADER)
+        .ok_or(AlexError::InvalidToken)?;
+    let header = headers.last().to_string();
+    let author = db
+        .run(move |conn| utils::checks::get_author(conn, header))
+        .await
+        .ok_or(AlexError::InvalidToken)?;
+
     let transaction = db.transaction(move |conn| {
         //? Does this crate exists?
         let exists = utils::checks::crate_exists(conn, name.as_str())?;
@@ -87,6 +96,15 @@ pub(crate) async fn put(mut req: Request<State>) -> tide::Result {
 
     let state = req.state().clone();
     let db = &state.db;
+
+    let headers = req
+        .header(utils::auth::AUTHORIZATION_HEADER)
+        .ok_or(AlexError::InvalidToken)?;
+    let header = headers.last().to_string();
+    let author = db
+        .run(move |conn| utils::checks::get_author(conn, header))
+        .await
+        .ok_or(AlexError::InvalidToken)?;
 
     let transaction = db.transaction(move |conn| {
         let headers = req
@@ -188,6 +206,15 @@ pub(crate) async fn delete(mut req: Request<State>) -> tide::Result {
 
     let state = req.state().clone();
     let db = &state.db;
+
+    let headers = req
+        .header(utils::auth::AUTHORIZATION_HEADER)
+        .ok_or(AlexError::InvalidToken)?;
+    let header = headers.last().to_string();
+    let author = db
+        .run(move |conn| utils::checks::get_author(conn, header))
+        .await
+        .ok_or(AlexError::InvalidToken)?;
 
     let transaction = db.transaction(move |conn| {
         let headers = req

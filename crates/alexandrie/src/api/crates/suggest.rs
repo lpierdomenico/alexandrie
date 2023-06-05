@@ -40,6 +40,15 @@ pub(crate) async fn get(req: Request<State>) -> tide::Result {
     let state = req.state().clone();
     let db = &state.db;
 
+    let headers = req
+        .header(utils::auth::AUTHORIZATION_HEADER)
+        .ok_or(AlexError::InvalidToken)?;
+    let header = headers.last().to_string();
+    let author = db
+        .run(move |conn| utils::checks::get_author(conn, header))
+        .await
+        .ok_or(AlexError::InvalidToken)?;
+
     //? Fetch the latest index changes.
     // state.index.refresh()?;
 

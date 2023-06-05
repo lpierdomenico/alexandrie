@@ -82,7 +82,7 @@ slog-term = "2.9.0"
 slog-async = "2.7.0"
 
 [features]
-default = ["frontend", "sqlite"]
+default = ["sqlite"]
 # default = ["frontend", "mysql"]
 # default = ["frontend", "postgres"]
 mysql = ["diesel/mysql", "diesel_migrations/mysql"]
