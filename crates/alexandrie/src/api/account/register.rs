@@ -46,21 +46,6 @@ pub async fn post(mut req: Request<State>) -> tide::Result {
         .await
         .ok_or(AlexError::InvalidToken)?;
 
-    //? Is the author already logged in ?
-    let author = if let Some(headers) = req.header(utils::auth::AUTHORIZATION_HEADER) {
-        let header = headers.last().to_string();
-        db.run(move |conn| utils::checks::get_author(conn, header))
-            .await
-    } else {
-        None
-    };
-    if author.is_some() {
-        return Ok(utils::response::error(
-            StatusCode::Unauthorized,
-            "please log out first to register as a new author",
-        ));
-    }
-
     //? Parse request body.
     let body: RequestBody = req.body_json().await?;
 
