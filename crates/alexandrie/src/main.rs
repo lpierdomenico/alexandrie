@@ -109,10 +109,10 @@ fn frontend_routes(state: State, frontend_config: FrontendConfig) -> io::Result<
     log::info!("mounting '/account/logout'");
     app.at("/account/logout")
         .get(frontend::account::logout::get);
-    log::info!("mounting '/account/register'");
-    app.at("/account/register")
-        .get(frontend::account::register::get)
-        .post(frontend::account::register::post);
+    // log::info!("mounting '/account/register'");
+    // app.at("/account/register")
+    //     .get(frontend::account::register::get)
+    //     .post(frontend::account::register::post);
     log::info!("mounting '/account/github'");
     app.at("/account/github")
         .get(frontend::account::github::get);
@@ -174,9 +174,9 @@ fn api_routes(state: State) -> Server<State> {
         Ok(res)
     }));
 
-    log::info!("mounting '/api/v1/account/register'");
-    app.at("/account/register")
-        .post(api::account::register::post);
+    // log::info!("mounting '/api/v1/account/register'");
+    // app.at("/account/register")
+    //     .post(api::account::register::post);
     log::info!("mounting '/api/v1/account/login'");
     app.at("/account/login").post(api::account::login::post);
     log::info!("mounting '/api/v1/account/tokens'");
